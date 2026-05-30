@@ -4,8 +4,13 @@
 
 pipeline {
 
-    agent any
-    
+    agent {
+    docker {
+        image 'python:3.11-slim'   // Jenkins pulls this image and runs all
+        args  '--user root -v /tmp:/tmp'  // stages inside it
+    }
+    }
+
     environment {
         // Virtual-environment directory (kept inside the workspace)
         VENV_DIR  = "${WORKSPACE}/.venv"
