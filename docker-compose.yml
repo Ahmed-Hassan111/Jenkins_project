@@ -1,0 +1,47 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# docker-compose.yml — Data Quality & ETL Validator
+# ─────────────────────────────────────────────────────────────────────────────
+
+version: "3.9"
+
+services:
+
+  # ── GUI application ─────────────────────────────────────────────────────────
+  etl-validator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: etl-validator:latest
+    container_name: etl_validator_app
+
+    # Forward the host X11 socket so the GUI can render on your desktop.
+    # On macOS: install XQuartz and run `xhost +localhost` first.
+    # On Linux:  this works out of the box for most distros.
+    environment:
+      - DISPLAY=${DISPLAY:-:0}
+    volumes:
+      # X11 socket (Linux)
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      # Persist output reports on the host
+      - ./output:/app/output
+      # Persist application logs on the host
+      - ./logs:/app/logs
+      # Mount a sample-data folder for easy CSV access inside the container
+      - ./data:/app/data
+    network_mode: host    # simplest way to reach the X server on Linux
+    stdin_open: true
+    tty: true
+
+  # ── Headless test runner ────────────────────────────────────────────────────
+  etl-tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: etl-validator:latest
+    container_name: etl_validator_tests
+    command: pytest tests/ -v --tb=short
+    volumes:
+      - ./output:/app/output
+      - ./logs:/app/logs
+    environment:
+      - PYTHONPATH=/app
