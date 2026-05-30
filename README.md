@@ -216,6 +216,6 @@ All events are logged to `logs/app.log` with timestamps and log levels:
 
 ---
 
-## 📜 License
+## GUI After running
+<img width="1538" height="1002" alt="GUI" src="https://github.com/user-attachments/assets/4ff35bd3-5d2b-478e-a67a-8da0c8c6537f" />
 
-MIT License — see `LICENSE` for details.
