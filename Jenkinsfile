@@ -4,13 +4,8 @@
 
 pipeline {
 
-    agent {
-        // Use any agent that has Python 3.11+ and pip available.
-        // Swap for a Docker agent if preferred:
-        //   docker { image 'python:3.11-slim' }
-        label 'python'
-    }
-
+    agent any
+    
     environment {
         // Virtual-environment directory (kept inside the workspace)
         VENV_DIR  = "${WORKSPACE}/.venv"
